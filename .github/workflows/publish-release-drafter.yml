@@ -1,11 +1,21 @@
 name: Release Drafter Publisher
 
 on:
-  workflow_run:
-    workflows: ["Release-Build"]
-    types:
-      - completed
+  push:
+    tags:
+      - 'v*'
 
 jobs:
-  invoke_publish_release_drafter:
-    uses: khanh-company-1/github-workflows/.github/workflows/publish-release-drafter.yml@main
+    publish-release-draft:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Publish Release Drafter
+            uses: release-drafter/action@v6
+            with:
+              disable-autolabeler: true
+              name: ${{ github.ref_name }}
+              tag: ${{ github.ref_name }}
+              version: ${{ github.ref_name }}
+              publish: true
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
