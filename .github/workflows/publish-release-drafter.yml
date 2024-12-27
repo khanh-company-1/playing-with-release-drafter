@@ -9,13 +9,27 @@ jobs:
     publish-release-draft:
         runs-on: ubuntu-latest
         steps:
+          - name: Configure Release Settings
+            run: |
+              if [[ "${GITHUB_REF_NAME}" == v10.* ]]; then
+                echo "commitish=release/10.0" >> $GITHUB_ENV
+                echo "latest=false" >> $GITHUB_ENV
+              elif [[ "${GITHUB_REF_NAME}" == v12.* ]]; then
+                echo "commitish=main" >> $GITHUB_ENV
+                echo "latest=true" >> $GITHUB_ENV
+              else
+                echo "commitish=" >> $GITHUB_ENV
+                echo "latest=true" >> $GITHUB_ENV
+              fi
           - name: Publish Release Drafter
             uses: release-drafter/release-drafter@v6
             with:
-              disable-autolabeler: true
               name: ${{ github.ref_name }}
               tag: ${{ github.ref_name }}
               version: ${{ github.ref_name }}
+              commitish: ${{ env.commitish }}
+              latest: ${{ env.latest }}
+              disable-autolabeler: true
               publish: true
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
