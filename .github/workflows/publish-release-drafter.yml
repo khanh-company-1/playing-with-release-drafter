@@ -1,0 +1,11 @@
+name: Release Drafter Publisher
+
+on:
+  workflow_run:
+    workflows: ["Release-Build"]
+    types:
+      - completed
+
+jobs:
+  invoke_publish_release_drafter:
+    uses: khanh-company-1/github-workflows/.github/workflows/publish-release-drafter.yml@main
