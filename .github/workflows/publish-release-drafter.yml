@@ -14,7 +14,7 @@ jobs:
               if [[ "${GITHUB_REF_NAME}" == v10.* ]]; then
                 echo "commitish=release/10.0" >> $GITHUB_ENV
               elif [[ "${GITHUB_REF_NAME}" == v12.* ]]; then
-                echo "commitish=release/12.0" >> $GITHUB_ENV
+                echo "commitish=main" >> $GITHUB_ENV
               else
                 echo "commitish=" >> $GITHUB_ENV
               fi
